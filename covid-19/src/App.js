@@ -1,10 +1,16 @@
 import React, {useState,useEffect} from 'react';
 import "./App.css";
 import{FormControl,Select,MenuItem} from "@material-ui/core";
+import InfoBox from "./InfoBox";
+import Map from "./Map";
+
+
+
 
 function App() {
   const[countries,setCountries]= useState([]);
   //STATE= how to write a variable in REACT
+  const[country,setCountry]=useState('worldwide');
 
   //https://disease.sh/v3/covid-19/countries
 
@@ -34,6 +40,17 @@ function App() {
 
     getCountriesData();
   }, []);
+
+  const onCountryChange = (event) => {
+    const countryCode = event.target.value;
+
+
+
+    setCountry(countryCode);
+
+
+    console.log("hi >>>>>>>>", countryCode);
+  };
   
   return (
     <div className="app">
@@ -43,7 +60,8 @@ function App() {
       <div className="app__header">
         <h1>COVID-19 tracker</h1>
         <FormControl className="app__dropdown">
-          <Select variant="outlined" value ="abc">
+          <Select variant="outlined" onChange= {onCountryChange} value ={country}>
+            <MenuItem value="worldwide">Worldwide</MenuItem>
 
             {/* Loop through all the countries and shown a drop down list of the options */}
             {
@@ -59,16 +77,27 @@ function App() {
       </div>
       
       
-      
+      <div className="app__stats">
+        <InfoBox title="Coronavirus Cases" cases={25} total ={200} />
 
-      {/* Info boxes */}
-      {/* Info boxes */}
-      {/* Info boxes */}
+        <InfoBox title="Recovered" cases ={900} total={3000} />
+
+        <InfoBox title="Deaths" cases={14028} total ={5000}/>
+
+        {/* Info boxes title ="Coroanavirus cases"*/}
+        {/* Info boxes title="Coroanavirus recoveries"*/}
+        {/* Info boxes title=""*/}
+
+
+      </div>
+
+      
 
       {/*Table */}
       {/*graph */}
 
       {/* Map */}
+      <Map />
     </div>
   )
 }
