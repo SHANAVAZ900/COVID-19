@@ -3,6 +3,7 @@ import "./App.css";
 import{Card,FormControl,Select,MenuItem, CardContent} from "@material-ui/core";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
+import Table from "./Table"
 
 
 
@@ -13,6 +14,8 @@ function App() {
   const[country,setCountry]=useState('worldwide');
 
   const[countryInfo, setCountryInfo] = useState({});
+
+  const[tableData, setTableData] =  useState([]);
 
   //https://disease.sh/v3/covid-19/countries
 
@@ -43,7 +46,7 @@ function App() {
         ));
 
         setCountries(countries);
-        
+        setTableData(data);
 
       }); 
     };
@@ -130,6 +133,7 @@ function App() {
         <CardContent>
           <h3>Live Cases by Country</h3>
           {/*Table */}
+          <Table countries={tableData}/>
           <h3>Worldwide New Cases</h3>
           {/*graph */}
 
