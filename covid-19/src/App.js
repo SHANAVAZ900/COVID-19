@@ -3,7 +3,8 @@ import "./App.css";
 import{Card,FormControl,Select,MenuItem, CardContent} from "@material-ui/core";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
-import Table from "./Table"
+import Table from "./Table";
+import { sortData } from "./util";
 
 
 
@@ -44,9 +45,10 @@ function App() {
             value:country.countryInfo.iso2, // UK, USA, 
           }
         ));
-
+        
+        const sortedData =sortData(data);
         setCountries(countries);
-        setTableData(data);
+        setTableData(sortedData);
 
       }); 
     };
