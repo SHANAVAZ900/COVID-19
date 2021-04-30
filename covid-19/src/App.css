@@ -8,6 +8,12 @@ body{
 
 }
 
+.app{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
 .app__header{
     display:flex;
     align-items:center;
@@ -16,7 +22,18 @@ body{
 
 }
 
+.app__left{
+    flex: 0.9;
+}
+
 .app__stats{
     display:flex;
     justify-content: space-between;
+}
+
+@media(max-width:540px){
+    .app{
+        flex-direction: column;
+    }
+
 }

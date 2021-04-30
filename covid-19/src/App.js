@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import "./App.css";
-import{FormControl,Select,MenuItem} from "@material-ui/core";
+import{Card,FormControl,Select,MenuItem, CardContent} from "@material-ui/core";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
 
@@ -12,10 +12,20 @@ function App() {
   //STATE= how to write a variable in REACT
   const[country,setCountry]=useState('worldwide');
 
+  const[countryInfo, setCountryInfo] = useState({});
+
   //https://disease.sh/v3/covid-19/countries
 
   //useeffect= Runs a place of code
   //based on a given condition
+
+  useEffect(() =>{
+    fetch("https://disease.sh/v3/covid-19/all")
+    .then(response => response.json())
+    .then(data => {
+      setCountryInfo(data);
+    });
+  }, []);
 
   useEffect(()=>{
     //The code inside here will run once
@@ -41,9 +51,24 @@ function App() {
     getCountriesData();
   }, []);
 
-  const onCountryChange = (event) => {
+  const onCountryChange = async (event) => {
     const countryCode = event.target.value;
+    // https://disease.sh/v3/covid-19/countries/[COUNTRY_CODE]
+    // https://disease.sh/v3/covid-19/all
 
+    const url = countryCode === 'worldwide' 
+    ? 'https://disease.sh/v3/covid-19/all' 
+    : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+    await fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      setCountry(countryCode);
+
+      // all of the data
+      // from the country response
+      setCountryInfo(data);
+
+    });
 
 
     setCountry(countryCode);
@@ -51,9 +76,11 @@ function App() {
 
     console.log("hi >>>>>>>>", countryCode);
   };
+  console.log("COUNTRY INFO", countryInfo);
   
   return (
     <div className="app">
+      <div className="app__left">
       {/* Header */}
       {/*Header = Title+select input dropdown field */}
       {/*margin adds space outside the element whereas padding adds space inside an element */}
@@ -78,11 +105,11 @@ function App() {
       
       
       <div className="app__stats">
-        <InfoBox title="Coronavirus Cases" cases={25} total ={200} />
+        <InfoBox title="Coronavirus Cases" cases= {countryInfo.todayCases} total ={countryInfo.cases} />
 
-        <InfoBox title="Recovered" cases ={900} total={3000} />
+        <InfoBox title="Recovered" cases = {countryInfo.todayRecovered} total={countryInfo.recovered} />
 
-        <InfoBox title="Deaths" cases={14028} total ={5000}/>
+        <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total ={countryInfo.deaths}/>
 
         {/* Info boxes title ="Coroanavirus cases"*/}
         {/* Info boxes title="Coroanavirus recoveries"*/}
@@ -93,13 +120,25 @@ function App() {
 
       
 
-      {/*Table */}
-      {/*graph */}
 
       {/* Map */}
       <Map />
+
+      </div>
+
+      <Card className="app__right">
+        <CardContent>
+          <h3>Live Cases by Country</h3>
+          {/*Table */}
+          <h3>Worldwide New Cases</h3>
+          {/*graph */}
+
+        </CardContent>
+        
+      </Card>
+      
     </div>
-  )
+  );
 }
 
 export default App
