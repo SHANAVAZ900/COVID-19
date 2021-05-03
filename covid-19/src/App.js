@@ -6,7 +6,7 @@ import Map from "./Map";
 import Table from "./Table";
 import { sortData } from "./util";
 import LineGraph from './LineGraph';
-
+import "leaflet/dist/leaflet.css";
 
 
 
@@ -18,6 +18,12 @@ function App() {
   const[countryInfo, setCountryInfo] = useState({});
 
   const[tableData, setTableData] =  useState([]);
+
+  const[mapCenter,setMapCenter]=useState({lat:20.593684, lng:78.96288});
+
+  const[mapZoom,setMapZoom] = useState(3);
+
+  const [mapCountries, setMapCountries] = useState([]);
 
   //https://disease.sh/v3/covid-19/countries
 
@@ -50,6 +56,7 @@ function App() {
         const sortedData =sortData(data);
         setCountries(countries);
         setTableData(sortedData);
+        setMapCountries(data);
 
       }); 
     };
@@ -73,7 +80,8 @@ function App() {
       // all of the data
       // from the country response
       setCountryInfo(data);
-
+      setMapCenter( [ data.countryInfo.lat,data.countryInfo.long ] );
+      setMapZoom(4);
     });
 
 
@@ -91,7 +99,7 @@ function App() {
       {/*Header = Title+select input dropdown field */}
       {/*margin adds space outside the element whereas padding adds space inside an element */}
       <div className="app__header">
-        <h1>COVID-19 tracker</h1>
+        <h1>COVID-19 Tracker</h1>
         <FormControl className="app__dropdown">
           <Select variant="outlined" onChange= {onCountryChange} value ={country}>
             <MenuItem value="worldwide">Worldwide</MenuItem>
@@ -128,7 +136,11 @@ function App() {
 
 
       {/* Map */}
-      <Map />
+      <Map
+      countries={mapCountries}
+      center = {mapCenter}
+      zoom = {mapZoom}
+      />
 
       </div>
 
