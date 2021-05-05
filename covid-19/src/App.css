@@ -3,13 +3,13 @@
   }
   
   body {
-    background-color: #f5f6fa;
+    background-color: azure;
   }
   
   .app {
     display: flex;
     justify-content: space-evenly;
-    background-color: #f5f6fa;
+    background-color:azure;
     padding: 20px;
   }
   
